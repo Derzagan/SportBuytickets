@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>SportBuytickets – Выбор места</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #fece1a;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    .top-bar, .footer {
+      background-color: #000;
+      color: white;
+      padding: 20px;
+      font-weight: bold;
+      font-size: 20px;
+    }
+
+    .hall-container {
+      padding: 40px 20px;
+    }
+
+    .hall {
+      display: grid;
+      grid-template-columns: repeat(25, 22px);
+      grid-auto-rows: 22px;
+      gap: 3px;
+      justify-content: center;
+      margin: 20px auto;
+    }
+
+    .seat {
+      width: 22px;
+      height: 22px;
+      background-color: #ccc;
+      cursor: pointer;
+      line-height: 22px;
+      text-align: center;
+      border-radius: 4px;
+      font-size: 10px;
+    }
+
+    .seat.taken {
+      background-color: #999;
+      cursor: not-allowed;
+    }
+
+    .seat.selected {
+      background-color: #4CAF50;
+    }
+
+    .stage {
+      grid-column: 8 / span 11;
+      grid-row: 10 / span 7;
+      background-color: #444;
+      color: white;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      border-radius: 8px;
+      width: 100%;
+      height: 100%;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: black;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #222;
+    }
+
+    .user-form {
+      margin-top: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .user-form input {
+      padding: 8px;
+      width: 250px;
+      border: 1px solid #999;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    .btn {
+  border: none;
+  font-family: 'Lato';
+  font-size: inherit;
+  color: inherit;
+  background: none;
+  cursor: pointer;
+  padding: 25px 80px;
+  display: inline-block;
+  margin: 15px 30px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 700;
+  outline: none;
+  position: relative;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+.btn:after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+/* Pseudo elements for icons */
+.btn:before {
+  font-family: 'FontAwesome';
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  position: relative;
+  -webkit-font-smoothing: antialiased;
+}
+
+
+/* Icon separator */
+.btn-sep {
+  padding: 25px 60px 25px 120px;
+}
+
+.btn-sep:before {
+  background: rgba(0,0,0,0.15);
+}
+
+
+
+/* Button 2 */
+.btn-2 {
+  background: #000000;
+  color: #fff;
+}
+
+.btn-2:hover {
+  background: #000000;
+}
+
+.btn-2:active {
+  background: #000000;
+  top: 2px;
+}
+
+.btn-2:before {
+  position: absolute;
+  height: 100%;
+  left: 0;
+  top: 0;
+  line-height: 3;
+  font-size: 140%;
+  width: 60px;
+}
+
+
+
+/* Icons */
+
+.icon-cart:before {
+  content: "\f07a";
+}
+
+.icon-heart:before {
+  content: "\f55a";
+}
+
+.icon-info:before {
+  content: "\f05a";
+}
+
+.icon-send:before {
+  content: "\f1d8";
+}
+  </style>
+
+
+
+
+
+
+
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
+
+</head>
+
+<body>
+  <div class="top-bar">SportBuytickets</div>
+
+  <div class="hall-container">
+    <h2>Выберите место</h2>
+    <div class="hall" id="hall"></div>
+
+    <div class="user-form">
+      <input type="text" id="name" placeholder="ФИО" required>
+      <input type="email" id="email" placeholder="Почта" required>
+      <input type="date" id="dob" required>
+      <input type="password" id="password" placeholder="Пароль (если нужен)">
+      <button class="btn btn-2 btn-sep icon-cart" onclick="buySeats()">Купить билет</button>
+
+    </div>
+  </div>
+
+  <div class="footer">Все права защищены © 2025</div>
+
+  <script>
+    const hall = document.getElementById("hall");
+    let selected = [];
+
+    const stageStartRow = 10;
+    const stageEndRow = 16;
+    const stageStartCol = 8;
+    const stageEndCol = 18;
+
+    for (let row = 1; row <= 25; row++) {
+      for (let col = 1; col <= 25; col++) {
+        if (row >= stageStartRow && row <= stageEndRow && col >= stageStartCol && col <= stageEndCol) {
+          if (row === stageStartRow && col === stageStartCol) {
+            const stage = document.createElement("div");
+            stage.className = "stage";
+            stage.textContent = "Ринг";
+            hall.appendChild(stage);
+          }
+          continue;
+        }
+
+        const seat = document.createElement("div");
+        seat.className = "seat";
+        seat.dataset.seat = `${row}-${col}`;
+        seat.onclick = function () {
+          if (seat.classList.contains("taken")) return;
+          seat.classList.toggle("selected");
+          const id = seat.dataset.seat;
+          if (selected.includes(id)) {
+            selected = selected.filter(s => s !== id);
+          } else {
+            selected.push(id);
+          }
+        };
+        hall.appendChild(seat);
+      }
+    }
+
+    function buySeats() {
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const dob = document.getElementById("dob").value;
+      const password = document.getElementById("password").value;
+
+      if (!name || !email || !dob) {
+        alert("Пожалуйста, заполните все обязательные поля.");
+        return;
+      }
+
+      alert("Вы выбрали места: " + selected.join(", ") + 
+            "\nФИО: " + name + 
+            "\nПочта: " + email + 
+            "\nДата рождения: " + dob +
+            (password ? "\nПароль: " + password : ""));
+    }
+  </script>
+</body>
+</html>

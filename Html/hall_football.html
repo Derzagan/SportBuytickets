@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>SportBuytickets – Выбор места</title>
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
+  <style>
+    body {
+      font-family: Lato, sans-serif;
+      background-color: #fece1a;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+    .top-bar, .footer {
+      background-color: #000;
+      color: white;
+      padding: 20px;
+      font-weight: bold;
+      font-size: 20px;
+    }
+    .hall-container {
+      padding: 40px 20px;
+    }
+    .hall {
+      display: grid;
+      grid-template-columns: repeat(50, 16px);
+      grid-auto-rows: 16px;
+      gap: 2px;
+      justify-content: center;
+      margin: 20px auto;
+    }
+    .seat {
+      width: 16px;
+      height: 16px;
+      background-color: #ccc;
+      cursor: pointer;
+      line-height: 16px;
+      text-align: center;
+      border-radius: 3px;
+      font-size: 10px;
+    }
+    .seat.taken {
+      background-color: #999;
+      cursor: not-allowed;
+    }
+    .seat.selected {
+      background-color: #000000;
+    }
+    .stage {
+      grid-column: 4 / span 44;
+      grid-row: 12 / span 28;
+      background-color: #444;
+      color: white;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      border-radius: 8px;
+      width: 100%;
+      height: 100%;
+    }
+    .user-form {
+      margin-top: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .user-form input {
+      padding: 8px;
+      width: 250px;
+      border: 1px solid #999;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+    .btn {
+      border: none;
+      font-family: 'Lato';
+      font-size: inherit;
+      color: white;
+      background: #000000;
+      cursor: pointer;
+      padding: 25px 80px;
+      text-transform: uppercase;
+      font-weight: 700;
+      outline: none;
+      position: relative;
+      margin-top: 20px;
+      border-radius: 10rem;
+    }
+    .btn:hover {
+      background: #000000;
+    }
+    .btn:before {
+      content: "\f07a";
+      font-family: 'FontAwesome';
+      position: absolute;
+      left: 20px;
+      top: 28%;
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="top-bar">Выбор места – Футбол</div>
+  <div class="hall-container">
+    <h2>Выберите место</h2>
+    <div class="hall" id="hall"></div>
+    <div class="user-form">
+      <input type="text" id="name" placeholder="ФИО" required>
+      <input type="email" id="email" placeholder="Почта" required>
+      <input type="date" id="dob" required>
+      <input type="password" id="password" placeholder="Пароль (если нужен)">
+      <button class="btn" onclick="buySeats()">Купить билет</button>
+    </div>
+  </div>
+  <div class="footer">Все права защищены © 2025</div>
+  <script>
+    const hall = document.getElementById("hall");
+    let selected = [];
+
+    for (let row = 1; row <= 50; row++) {
+      for (let col = 1; col <= 50; col++) {
+        if (row >= 12 && row < 40 &&
+            col >= 4 && col < 48) {
+          if (row === 12 && col === 4) {
+            const stage = document.createElement("div");
+            stage.className = "stage";
+            stage.textContent = "Сцена";
+            hall.appendChild(stage);
+          }
+          continue;
+        }
+        const seat = document.createElement("div");
+        seat.className = "seat";
+        seat.dataset.seat = `${row}-${col}`;
+        seat.onclick = function () {
+          if (seat.classList.contains("taken")) return;
+          seat.classList.toggle("selected");
+          const id = seat.dataset.seat;
+          if (selected.includes(id)) {
+            selected = selected.filter(s => s !== id);
+          } else {
+            selected.push(id);
+          }
+        };
+        hall.appendChild(seat);
+      }
+    }
+
+    function buySeats() {
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const dob = document.getElementById("dob").value;
+      const password = document.getElementById("password").value;
+
+      if (!name || !email || !dob) {
+        alert("Пожалуйста, заполните все обязательные поля.");
+        return;
+      }
+
+      alert("Вы выбрали места: " + selected.join(", ") + 
+            "\nФИО: " + name + 
+            "\nПочта: " + email + 
+            "\nДата рождения: " + dob +
+            (password ? "\nПароль: " + password : ""));
+    }
+  </script>
+</body>
+</html>

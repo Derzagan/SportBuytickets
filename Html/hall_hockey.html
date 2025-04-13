@@ -113,7 +113,7 @@
       <input type="text" id="name" placeholder="ФИО" required>
       <input type="email" id="email" placeholder="Почта" required>
       <input type="date" id="dob" required>
-      <input type="password" id="password" placeholder="Пароль (если нужен)">
+      
       <button class="btn" onclick="buySeats()">Купить билет</button>
     </div>
   </div>
@@ -129,7 +129,7 @@
           if (row === 19 && col === 15) {
             const stage = document.createElement("div");
             stage.className = "stage";
-            stage.textContent = "Сцена";
+            stage.textContent = "хоккейное поля";
             hall.appendChild(stage);
           }
           continue;
@@ -155,7 +155,7 @@
       const name = document.getElementById("name").value;
       const email = document.getElementById("email").value;
       const dob = document.getElementById("dob").value;
-      const password = document.getElementById("password").value;
+      
 
       if (!name || !email || !dob) {
         alert("Пожалуйста, заполните все обязательные поля.");

@@ -234,7 +234,7 @@
       <input type="text" id="name" placeholder="ФИО" required>
       <input type="email" id="email" placeholder="Почта" required>
       <input type="date" id="dob" required>
-      <input type="password" id="password" placeholder="Пароль (если нужен)">
+      
       <button class="btn btn-2 btn-sep icon-cart" onclick="buySeats()">Купить билет</button>
 
     </div>
@@ -284,7 +284,7 @@
       const name = document.getElementById("name").value;
       const email = document.getElementById("email").value;
       const dob = document.getElementById("dob").value;
-      const password = document.getElementById("password").value;
+      
 
       if (!name || !email || !dob) {
         alert("Пожалуйста, заполните все обязательные поля.");

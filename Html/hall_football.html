@@ -133,7 +133,8 @@
        <input type="text" id="name" placeholder="ФИО" required>
        <input type="email" id="email" placeholder="Почта" required>
        <input type="date" id="dob" required>
-       <input type="password" id="password" placeholder="Пароль (если нужен)">
+
+       <!-- <input type="password" id="password" placeholder="Пароль (если нужен)"> -->
        <button class="btn" onclick="buySeats()">Купить билет</button>
      </div>
    </div>
@@ -149,7 +150,7 @@
            if (row === 12 && col === 4) {
              const stage = document.createElement("div");
              stage.className = "stage";
-             stage.textContent = "Сцена";
+             stage.textContent = "футбольное поле";
              hall.appendChild(stage);
            }
            continue;

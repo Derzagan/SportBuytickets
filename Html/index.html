@@ -147,6 +147,8 @@
                               <a href="#" onclick="logout()">Выйти</a>
                             </li>
                           </ul>
+                          <span id="user-role" style="color:white; margin-right: 20px;"></span>
+
                           
                           
                     </div>
@@ -253,6 +255,7 @@
                                 </div>
                                 <p>Самый престижный клубный турнир Европы, где лучшие команды континента сражаются за титул чемпиона. Финал Лиги чемпионов — это грандиозное событие, которое определит сильнейший клуб сезона.</p>
                                 <a href="hall_football.html?event=UEFA" class="button" target="_blank">Выбрать места</a>
+                                <button onclick="openEditModal(this)">Редактировать</button>
                             </div>
                         </div>
                     </div>
@@ -288,6 +291,7 @@
                             </div> 
 
                             <a href="hall.html?event=ufc229" class="button" target="_blank">Выбрать места</a>
+                            <button onclick="openEditModal(this)">Редактировать</button>
       
                         </div> 
                     </div>
@@ -316,6 +320,7 @@
                                 </div>
                                 <p>Важный матч плей-офф КХЛ. Соперники давно ведут ожесточенную борьбу в лиге, а постер с огненным оформлением обещает горячее сражение на льду.</p>
                                 <a href="hall_hockey.html?event=KHL" class="button" target="_blank">Выбрать места</a>
+                                <button onclick="openEditModal(this)">Редактировать</button>
                                 
                             </div>
                         </div>
@@ -345,6 +350,7 @@
                                 </div>
                                 <p>На Арене состоится финал чемпионата Европы 2025 года, в котором встретятся сборные Испании и Англии. Обе команды демонстрируют мощный атакующий футбол и готовы бороться за главный трофей турнира.</p>
                                 <a href="hall_football.html?event=Euro_final" class="button" target="_blank">Выбрать места</a>
+                                <button onclick="openEditModal(this)">Редактировать</button>
                             </div>
                         </div>
                     </div>
@@ -383,6 +389,7 @@
 
 
                                     <a href="hall.html?event=ufc306" class="button" target="_blank">Выбрать места</a>
+                                    <button onclick="openEditModal(this)">Редактировать</button>
                             </div>
                         </div>
                     </div>
@@ -411,6 +418,7 @@
                                 </div>
                                 <p>Игра в рамках плей-офф ВХЛ (Высшая хоккейная лига), где команды покажут жесткую борьбу на льду.</p>
                                 <a href="hall_hockey.html?event=VHL" class="button" target="_blank">Выбрать места</a>
+                                <button onclick="openEditModal(this)">Редактировать</button>
                             </div>
                         </div>
                     </div>
@@ -440,6 +448,7 @@
                                 
                                 <p>Заключительный матч чемпионата мира 2022 в Катаре, где две лучшие сборные планеты сойдутся в битве за титул чемпиона мира. Это кульминация месячного футбольного марафона, где решится судьба главного трофея</p>
                                 <a href="hall_football.html?event=ws" class="button" target="_blank">Выбрать места</a>
+                                <button onclick="openEditModal(this)">Редактировать</button>
                             </div>
 
                         </div>
@@ -474,6 +483,7 @@
                                     </p>
 
                                     <a href="hall.html?event=box" class="button" target="_blank">Выбрать места</a>
+                                    <button onclick="openEditModal(this)">Редактировать</button>
 
                             </div>
                         </div>
@@ -504,6 +514,8 @@
                                 <p>Матч Континентальной хоккейной лиги (КХЛ), где Лада сразится с Барысом. Атмосфера обещает быть напряжённой, так как обе команды борются за важные очки в турнирной таблице.</p>
 
                                 <a href="hall_hockey.html?event=LadavsBarys" class="button" target="_blank">Выбрать места</a>
+                                <button onclick="openEditModal(this)">Редактировать</button>
+
                             </div>
                         </div>
                     </div>
@@ -783,23 +795,47 @@
 
         <script>
             const user = sessionStorage.getItem("user");
-          
-            const loginLink = document.getElementById("login-link");
-            const loginStatus = document.getElementById("login-status");
-            const logoutLi = document.getElementById("logout-li");
+            const userRoleEl = document.getElementById("user-role");
           
             if (user) {
-              loginLink.innerText = `Вы вошли как: ${user}`;
-              loginLink.href = "#";
-              logoutLi.style.display = "inline-block";
-            }
+              userRoleEl.textContent = `Вы вошли как: ${user}`;
+              
+              if (user === "admin") {
+                // Делаем все блоки редактируемыми
+                document.querySelectorAll('.project-description').forEach(block => {
+                  const editBtn = document.createElement("button");
+                  editBtn.textContent = "✏️ Редактировать";
+                  editBtn.style.marginTop = "10px";
+                  editBtn.onclick = () => {
+                    const title = block.querySelector("h3");
+                    const price = block.querySelector(".project-info div:nth-child(1)");
+                    const date = block.querySelector(".project-info div:nth-child(2)");
+                    const place = block.querySelector(".project-info div:nth-child(3)");
+                    const desc = block.querySelector("p");
           
-            function logout() {
-              sessionStorage.removeItem("user");
-              location.reload();
+                    const newTitle = prompt("Новое название:", title.textContent);
+                    const newPrice = prompt("Новая цена:", price.textContent.replace("Цена ", ""));
+                    const newDate = prompt("Новая дата:", date.textContent.replace("Дата ", ""));
+                    const newPlace = prompt("Новое место:", place.textContent.replace("Место ", ""));
+                    const newDesc = prompt("Новое описание:", desc.textContent);
+          
+                    if (newTitle) title.textContent = newTitle;
+                    if (newPrice) price.innerHTML = `<span>Цена</span> ${newPrice}`;
+                    if (newDate) date.innerHTML = `<span>Дата</span>${newDate}`;
+                    if (newPlace) place.innerHTML = `<span>Место</span>${newPlace}`;
+                    if (newDesc) desc.textContent = newDesc;
+                  };
+          
+                  block.appendChild(editBtn);
+                });
+              }
+            } else {
+              userRoleEl.textContent = "Вы не вошли";
             }
           </script>
           
+          
+          
 
 
 
@@ -837,6 +873,64 @@
 
 
 
-
+          <dialog id="editModal">
+            <form method="dialog" style="padding: 20px; max-width: 500px;">
+              <h3>Редактировать ивент</h3>
+              <input id="editTitle" placeholder="Название" style="width: 100%; margin-bottom: 10px;" />
+              <input id="editDate" placeholder="Дата" style="width: 100%; margin-bottom: 10px;" />
+              <input id="editPlace" placeholder="Место" style="width: 100%; margin-bottom: 10px;" />
+              <input id="editPrice" placeholder="Цена" style="width: 100%; margin-bottom: 10px;" />
+              <textarea id="editDescription" placeholder="Описание" style="width: 100%; margin-bottom: 10px;"></textarea>
+              <input id="editImage" type="file" accept="image/*" />
+              <div style="margin-top: 10px;">
+                <button id="saveChanges" style="background: black; color: white; padding: 8px 20px; border: none;">Сохранить</button>
+                <button onclick="editModal.close()" style="margin-left: 10px;">Отмена</button>
+              </div>
+            </form>
+          </dialog>
+          
+          <script>
+            let currentCard;
+          
+            function openEditModal(button) {
+              const card = button.closest(".single-project");
+              currentCard = card;
+          
+              document.getElementById("editTitle").value = card.querySelector("h3").innerText;
+              document.getElementById("editDate").value = card.querySelector(".project-info div:nth-child(2)").innerText.replace("Дата", "").trim();
+              document.getElementById("editPlace").value = card.querySelector(".project-info div:nth-child(3)").innerText.replace("Место", "").trim();
+              document.getElementById("editPrice").value = card.querySelector(".project-info div:nth-child(1)").innerText.replace("Цена", "").trim();
+              document.getElementById("editDescription").value = card.querySelector("p").innerText;
+          
+              document.getElementById("editModal").showModal();
+            }
+          
+            document.getElementById("saveChanges").onclick = function () {
+              if (!currentCard) return;
+          
+              currentCard.querySelector("h3").innerText = document.getElementById("editTitle").value;
+              currentCard.querySelector(".project-info div:nth-child(1)").innerHTML = "<span>Цена</span> " + document.getElementById("editPrice").value;
+              currentCard.querySelector(".project-info div:nth-child(2)").innerHTML = "<span>Дата</span> " + document.getElementById("editDate").value;
+              currentCard.querySelector(".project-info div:nth-child(3)").innerHTML = "<span>Место</span> " + document.getElementById("editPlace").value;
+              currentCard.querySelector("p").innerText = document.getElementById("editDescription").value;
+          
+              const imageInput = document.getElementById("editImage");
+              if (imageInput.files.length > 0) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                  currentCard.querySelector("img").src = e.target.result;
+                };
+                reader.readAsDataURL(imageInput.files[0]);
+              }
+          
+              document.getElementById("editModal").close();
+            };
+          </script>
+          
+  
+  
+  
+          
+  
     </body>
 </html>

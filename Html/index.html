@@ -15,6 +15,26 @@
         <title>SportBuytickets</title>
 
         <style>
+
+
+
+#login-link {
+  display: inline-block;
+  background-color: #000;
+  color: #fff !important;
+  padding: 8px 20px;
+  border-radius: 6px;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: background 0.3s;
+  margin-left: 20px;
+}
+
+#login-link:hover {
+  background-color: #222;
+  text-decoration: none;
+}
+
             .button {
               display: inline-block;
               padding: .75rem 1.25rem;
@@ -113,21 +133,22 @@
                     <!-- Main navigation -->
                     <div class="nav-collapse collapse pull-right">
                         <ul class="nav" id="top-navigation">
-                           
-                            <li>
-                                <a href="#home">Дом</a>
+                            <li><a href="#home">Дом</a></li>
+                            <li><a href="#portfolio">Покупка</a></li>
+                            <li><a href="#clients">Клиенты</a></li>
+                            <li><a href="#contact">Контакты</a></li>
+                          </ul>
+                          
+                          <ul class="nav">
+                            <li id="login-status">
+                              <a href="auth.html" id="login-link">Вход</a>
                             </li>
-                            <li>
-                                <a href="#portfolio">Покупка</a>
+                            <li id="logout-li" style="display: none;">
+                              <a href="#" onclick="logout()">Выйти</a>
                             </li>
-                           
-                            <li>
-                                <a href="#clients">Клиенты</a>
-                            </li>
-                            <li>
-                                <a href="#contact">Контакты</a>
-                            </li>
-                        </ul>
+                          </ul>
+                          
+                          
                     </div>
                     <!-- End main navigation -->
                 </div>
@@ -759,6 +780,26 @@
             <script src="js/respond.min.js"></script>
         <![endif]-->
         <script type="text/javascript" src="js/app.js"></script>
+
+        <script>
+            const user = sessionStorage.getItem("user");
+          
+            const loginLink = document.getElementById("login-link");
+            const loginStatus = document.getElementById("login-status");
+            const logoutLi = document.getElementById("logout-li");
+          
+            if (user) {
+              loginLink.innerText = `Вы вошли как: ${user}`;
+              loginLink.href = "#";
+              logoutLi.style.display = "inline-block";
+            }
+          
+            function logout() {
+              sessionStorage.removeItem("user");
+              location.reload();
+            }
+          </script>
+          
 
 
 
